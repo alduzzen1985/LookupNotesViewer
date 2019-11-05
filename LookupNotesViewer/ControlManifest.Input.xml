@@ -2,8 +2,11 @@
 <manifest>
   <control namespace="LookupNotesViewer" constructor="LookupNotesViewer" version="0.0.1" display-name-key="LookupNotesViewer" description-key="LookupNotesViewer description" control-type="standard">
     <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
-    <property name="lookupField" display-name-key="LookupField" description-key="Lookup field to generate the Note Table" of-type="SingleLine.Text" usage="bound" required="true" />
-    <!-- 
+    
+    <property name="fieldName" display-name-key="FieldName" description-key="something"  usage="bound" of-type="SingleLine.Text" required="true" />
+ 
+    <property name="lookupField" display-name-key="LookupField" description-key="Lookup field to generate the Note Table"  usage="input" of-type="SingleLine.Text"  required="true" />
+      <!--
       Property node's of-type attribute can be of-type-group attribute. 
       Example:
       <type-group name="numbers">

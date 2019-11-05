@@ -1,4 +1,6 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
+import { PrimaryEntity } from "./Helper/EntityHelper";
+import { WebApiHelper } from "./Helper/WebApiHelper";
 
 export class LookupNotesViewer implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
@@ -24,15 +26,25 @@ export class LookupNotesViewer implements ComponentFramework.StandardControl<IIn
 
 		this.localContext = context;
 		this.localContainer = container;
-		
+
 		console.log("Retrieve the Parameter");
 
-		let crmTagStringsAttribute= context.parameters.lookupField.raw;
+		let crmTagStringsAttribute: string = context.parameters.lookupField.raw as string;
 
-		// @ts-ignore 
-		let crmTagStringsAttributeValue = Xrm.Page.getAttribute(crmTagStringsAttribute).getValue();
-		console.log("*****");
-		console.log(`Okay, I've to find the attribute ${crmTagStringsAttribute}`);
+		let currentEntity = new PrimaryEntity(this.localContext);
+
+
+
+
+		if (!!currentEntity.Entity.typeName) {
+			console.log("I have the Entity");
+			let webApiHelper = new WebApiHelper(this.localContext);
+			let result = webApiHelper.GetRecordByPrimaryEntityAndSelectFields(currentEntity, crmTagStringsAttribute);
+
+			console.log("I have the result");
+			// @ts-ignore 
+		
+		}
 
 		let div = document.createElement("div");
 		div.innerHTML = "OKKAY !!! HERE WE ARE FINALLY :-)"
@@ -56,6 +68,7 @@ export class LookupNotesViewer implements ComponentFramework.StandardControl<IIn
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void {
 		// Add code to update control view
+		console.log("Something changed");
 	}
 
 	/** 
