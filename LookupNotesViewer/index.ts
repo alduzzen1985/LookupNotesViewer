@@ -2,10 +2,33 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import { PrimaryEntity } from "./Helper/EntityHelper";
 import { WebApiHelper } from "./Helper/WebApiHelper";
 
+import { AnnotationHelper } from "./Helper/AnnotationHelper";
+import { TableHelper, annotationHTMLTable } from "./Helper/TableHelper";
+
+
+
+type annotationType = {
+	annotationid: string,
+	createdon: Date,
+	createdby: string,
+	subject: string,
+	notetext: string,
+	isdocument: boolean,
+	documentBody: string,
+	mimetype: string,
+	filename: string
+}
+
+
 export class LookupNotesViewer implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+
+
 
 	private localContext: ComponentFramework.Context<IInputs>;
 	private localContainer: HTMLDivElement;
+
+
+	
 
 	/**
 	 * Empty constructor.
@@ -13,6 +36,9 @@ export class LookupNotesViewer implements ComponentFramework.StandardControl<IIn
 	constructor() {
 
 	}
+
+
+	
 
 	/**
 	 * Used to initialize the control instance. Controls can kick off remote server calls and other initialization actions here.
@@ -24,41 +50,47 @@ export class LookupNotesViewer implements ComponentFramework.StandardControl<IIn
 	 */
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
 
+	//	this.downloadClicked = this.downloadClick.bind(this);
 		this.localContext = context;
 		this.localContainer = container;
 
 		console.log("Retrieve the Parameter");
 
 		let crmTagStringsAttribute: string = context.parameters.lookupField.raw as string;
-
 		let currentEntity = new PrimaryEntity(this.localContext);
 
+		var that = this;
+
+		var successRetrieveId = function (val: ComponentFramework.WebApi.Entity) {
+
+			AnnotationHelper.getByRegarding(val["_ag_contact_value"], context).then(function (result: ComponentFramework.WebApi.Entity[]) {
+				let tbHelper = new TableHelper(that.localContext);
+
+				
+				let table = tbHelper.GetHtml(result);
+				let div = document.createElement("div");
+				div.appendChild(table);
+				that.localContainer.appendChild(div);
+			});
+
+		}
+
+		const error = function (val: string) {
+			console.log("NUOOOO");
+		}
 
 
 
 		if (!!currentEntity.Entity.typeName) {
 			console.log("I have the Entity");
 			let webApiHelper = new WebApiHelper(this.localContext);
-			let result = webApiHelper.GetRecordByPrimaryEntityAndSelectFields(currentEntity, crmTagStringsAttribute);
-
+			let result = webApiHelper.GetRecordByPrimaryEntityAndSelectFields(currentEntity, successRetrieveId, error, crmTagStringsAttribute);
 			console.log("I have the result");
-			// @ts-ignore 
-		
 		}
-
-		let div = document.createElement("div");
-		div.innerHTML = "OKKAY !!! HERE WE ARE FINALLY :-)"
-		this.localContainer.appendChild(div);
-
 
 		//https://pcf.gallery/attachment-manager/
 
-
-
-		// Add control initialization code
 	}
-
-
 
 
 
@@ -86,4 +118,9 @@ export class LookupNotesViewer implements ComponentFramework.StandardControl<IIn
 	public destroy(): void {
 		// Add code to cleanup control if necessary
 	}
+
+
+
+
+
 }
