@@ -1,0 +1,19 @@
+.customTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.customTable th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+.borderBotton {
+    border-bottom: 1px solid #ddd;
+}
+
+i {
+    display: inline-block;
+    margin-left: 0.4em;
+    font-size: 24px;
+}

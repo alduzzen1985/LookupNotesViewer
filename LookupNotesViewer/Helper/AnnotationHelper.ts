@@ -4,19 +4,26 @@ import { FetchXML } from "./EntityHelper";
 export const AnnotationHelper = {
   entityname: "annotation",
   fetchXMLAnnotations: `<fetch mapping="logical" version="1.0">
-        <entity name="annotation">
-        <attribute name="subject" />
-        <attribute name="createdon" />
-        <attribute name="mimetype" />
-        <attribute name="createdby" />
-        <attribute name="annotationid" />
-        <attribute name="isdocument" />
-        <attribute name="filename" />
-        <filter>
-            <condition attribute="objectid" operator="eq" value="{objectid}" />
-        </filter>
-        </entity>
-    </fetch>`,
+  <entity name="annotation">
+    <attribute name="subject" />
+    <attribute name="notetext" />
+    <attribute name="createdon" />
+    <attribute name="mimetype" />
+    <attribute name="createdby" />
+    <attribute name="annotationid" />
+    <attribute name="isdocument" />
+    <attribute name="filename" />
+    <order attribute="createdon" descending="true" />
+    <filter>
+      <condition attribute="objectid" operator="eq" value="{objectid}" />
+    </filter>
+    <link-entity name="systemuser" from="systemuserid" to="createdby" link-type="inner">
+      <attribute name="fullname" />
+    </link-entity>
+  </entity>
+</fetch>
+    `,
+
   fetchXMLAnnotationsFile: `<fetch mapping="logical" version="1.0">
     <entity name="annotation">
       <attribute name="documentbody" />
@@ -33,6 +40,7 @@ export const AnnotationHelper = {
     console.log("GetByRegarding");
     const fetchXml: string = (AnnotationHelper.fetchXMLAnnotations as string).split("{objectid}").join(objectid);
     const documents = await context.webAPI.retrieveMultipleRecords("annotation", FetchXML.prepareOptions(fetchXml));
+    console.log("GetRegarding Done");
     return documents.entities;
   },
 
