@@ -49,35 +49,32 @@ export class LookupNotesViewer implements ComponentFramework.StandardControl<IIn
 	 * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
 	 */
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement) {
-
 		//	this.downloadClicked = this.downloadClick.bind(this);
 		this.localContext = context;
 		this.localContainer = container;
-
-		console.log("Retrieve the Parameter");
-
 		this.BuildTableAttachments(context);
-		//https://pcf.gallery/attachment-manager/
-
 	}
 
 
 	public BuildTableAttachments(context: ComponentFramework.Context<IInputs>) {
 
 		let crmTagStringsAttribute: string = context.parameters.lookupField.raw as string;
+		let emptyMessage: string = context.parameters.emptyMessage.raw as string;
+		let dateTimeFormat: string = context.parameters.dateTimeFormat.raw as string;
+
 		crmTagStringsAttribute = `_${crmTagStringsAttribute}_value`;// "_" + crmTagStringsAttribute + "_value";
 		let currentEntity = new PrimaryEntity(this.localContext);
 
 		var that = this;
 
 		var successRetrieveId = function (val: ComponentFramework.WebApi.Entity) {
+			let lookupNotes = document.getElementsByClassName("lookupNotes");
+
 			if (!!val[crmTagStringsAttribute]) {
 				AnnotationHelper.getByRegarding(val[crmTagStringsAttribute], context).then(function (result: ComponentFramework.WebApi.Entity[]) {
 					console.log("Attribute Related");
 					let tbHelper = new TableHelper(that.localContext);
-					let table = tbHelper.GetHtml(result);
-
-					let lookupNotes = document.getElementsByClassName("lookupNotes");
+					let table = tbHelper.GetTableHtml(result, emptyMessage, dateTimeFormat);
 
 					// If already exists then I clean up
 					if (lookupNotes.length === 1) {
@@ -89,11 +86,23 @@ export class LookupNotesViewer implements ComponentFramework.StandardControl<IIn
 						div.appendChild(table);
 						that.localContainer.appendChild(div);
 					}
-
-
-
-
 				});
+			} else {
+				let tbHelper = new TableHelper(that.localContext);
+				let tableEmptyMessage = tbHelper.GetEmptyMessage(emptyMessage);
+
+				if (lookupNotes.length === 1) {
+					lookupNotes[0].innerHTML = '';
+					lookupNotes[0].appendChild(tableEmptyMessage);
+				}
+				else {
+					let div = document.createElement("div");
+					div.setAttribute("class", "lookupNotes");
+					div.appendChild(tableEmptyMessage);
+					that.localContainer.appendChild(div);
+				}
+
+
 			}
 		}
 

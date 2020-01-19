@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest>
-  <control namespace="LookupNotesViewer" constructor="LookupNotesViewer" version="0.0.22" display-name-key="LookupNotesViewer" description-key="LookupNotesViewer description" control-type="standard">
+  <control namespace="LookupNotesViewer" constructor="LookupNotesViewer" version="0.0.56" display-name-key="LookupNotesViewer" description-key="LookupNotesViewer description" control-type="standard">
     <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
     <property name="fieldName" display-name-key="FieldName" description-key="something" usage="bound" of-type="SingleLine.Text" required="true" />
-    <property name="lookupField" display-name-key="LookupField" description-key="Lookup field to generate the Note Table" usage="input" of-type="SingleLine.Text" required="true" />
+    <property name="lookupField" display-name-key="LookupField" description-key="Logical name of the Lookup field to generate the Note Table" usage="input" of-type="SingleLine.Text" required="true" />
+    <property name="emptyMessage" display-name-key="EmptyMessage" description-key="Message to show if no notes are available" usage="input" of-type="SingleLine.Text" />
+    <property name="dateTimeFormat" display-name-key="DateTimeFormat" description-key="Date Time format used to render. Default Day/Month/Year Hour:Min" usage="input" of-type="SingleLine.Text" />
     <!--
       Property node's of-type attribute can be of-type-group attribute. 
       Example:
@@ -17,8 +19,6 @@
     -->
     <resources>
       <code path="index.ts" order="1" />
-      <css path="css/bootstrap.min.css" order="1" />
-      <css path="css/bootstrap-grid.min.css" order="2" />
       <css path="css/font-awesome-4-7-0.css" order="3" />
       <css path="css/table.css" order="3" />
       <!-- UNCOMMENT TO ADD MORE RESOURCES

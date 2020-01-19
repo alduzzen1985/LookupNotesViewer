@@ -1,6 +1,7 @@
 import { IInputs } from "../generated/ManifestTypes";
 import { download } from "../Libraries/download2.js";
 import { AnnotationHelper } from "./AnnotationHelper";
+import * as moment from 'moment';
 
 export const annotationHTMLTable = {
 
@@ -12,122 +13,130 @@ export const annotationHTMLTable = {
 }
 
 export class TableHelper {
+
     private downloadClicked: EventListenerOrEventListenerObject;
+    private textNoteClicked: EventListenerOrEventListenerObject;
+
     private localContext: ComponentFramework.Context<IInputs>;
-
-
 
     constructor(context: ComponentFramework.Context<IInputs>) {
         this.localContext = context;
     }
 
-    public GetHtml(elements: ComponentFramework.WebApi.Entity[]): HTMLTableElement {
+    public ShowHideText(evnt: Event): void {
+        let btn = evnt.target as HTMLElement;
 
-        console.log("GetHtml");
+        if (btn.className === "collapsedText") {
+            btn.className = "";
+        } else {
+            btn.className = "collapsedText";
+        }
+    }
+
+    public GetTableHtml(elements: ComponentFramework.WebApi.Entity[], 
+        emptyMessage = "No notes are available",
+        dateTimeFormat = "DD/MM/YYYY HH:MM"): HTMLTableElement {
+
+        if(!dateTimeFormat){
+            dateTimeFormat = "DD/MM/YYYY HH:MM";
+        }
+
         let that = this;
         var t = document.createElement("table");
         t.setAttribute("class", "customTable")
         let table: HTMLTableElement = t;
 
-        //table.className = "table table-striped";
-        /*
-        let headerRow = document.createElement("tr");
-        headerRow.appendChild(this.GetCellText("Created on"));
-        headerRow.appendChild(this.GetCellText("Created by"));
-        headerRow.appendChild(this.GetCellText("Subject"));
-        headerRow.appendChild(this.GetCellText("Text"));
-        headerRow.appendChild(this.GetCellText(""));
-        table.appendChild(headerRow);
-        */
 
+
+        
+        this.textNoteClicked = this.ShowHideText.bind(that);
         this.downloadClicked = this.downloadClick.bind(that);
+        if (!!elements && elements.length > 0) {
+            elements.forEach(function (annotation: ComponentFramework.WebApi.Entity, index: number) {
+
+                let rowCreatedBy = document.createElement("tr");
+                let createdOn = moment(Date.parse(annotation["createdon"])).format(dateTimeFormat);
+                rowCreatedBy.appendChild(that.GetCellHtml(`<b>Created by by</b> ${annotation["created.fullname"]} <b>on</b> ${createdOn}`));
+                table.appendChild(rowCreatedBy);
 
 
-
-
-        elements.forEach(function (annotation: ComponentFramework.WebApi.Entity, index: number) {
-
-            let rowMofiedBy = document.createElement("tr");
-            rowMofiedBy.appendChild(that.GetCellHtml(`<b>Modified by</b> ${annotation["systemuser1.fullname"]} <b>on</b> ${annotation["createdon"] as string}`));
-            table.appendChild(rowMofiedBy);
-
-            let rowTitle = document.createElement("tr");
-            rowTitle.appendChild(that.GetChildRecord(annotation["subject"] as string));
-            table.appendChild(rowTitle);
-
-            let rowNote = document.createElement("tr");
-            rowNote.appendChild(that.GetChildRecord(annotation["notetext"] as string));
-            rowNote.setAttribute("class", !annotation.isdocument ? "borderBotton" : "");
-            table.appendChild(rowNote);
-
-            if (annotation.isdocument) {
-
-                let rowDocument = document.createElement("tr");
-                let cell = document.createElement("td");
-                cell.setAttribute("style", "vertical-align:middle");
-                cell.setAttribute("class", "borderBotton");
-                console.log("creating button");
-
-                let button = document.createElement("p");
-                button.textContent = annotation["filename"] as string;
-                button.setAttribute("style", "cursor: pointer;font-weight:bold;");
-                button.addEventListener("click", that.downloadClicked);
-                button.setAttribute(annotationHTMLTable.filename, annotation["filename"] as string);
-                button.setAttribute(annotationHTMLTable.annotationid, annotation["annotationid"] as string);
-                button.setAttribute(annotationHTMLTable.mimetype, annotation["mimetype"] as string);
-
-                let icon = document.createElement("i");
-                icon.setAttribute("name", "Show Input Parameter");
-                icon.setAttribute("class", that.GetIconByMimeType(annotation["mimetype"]));
+                let modifiedon = moment(Date.parse(annotation["modifiedon"])).format(dateTimeFormat);
+                let rowModifiedBy = document.createElement("tr");
+                rowModifiedBy.appendChild(that.GetCellHtml(`<b>Modified by by</b> ${annotation["modified.fullname"]} <b>on</b> ${modifiedon}`));
+                table.appendChild(rowModifiedBy);
                 
-                button.appendChild(icon);
-                cell.appendChild(button);
-                rowDocument.appendChild(cell);
-                table.appendChild(rowDocument);
-            }
+                
 
-            // OLD TABLE
-            /*            
-            let row = document.createElement("tr");
-            row.appendChild(that.GetChildRecord(annotation["createdon"] as string));
-            row.appendChild(that.GetChildRecord(annotation["systemuser1.fullname"] as string));
-            row.appendChild(that.GetChildRecord(annotation["subject"] as string));
-            row.appendChild(that.GetChildRecord(annotation["notetext"] as string));
+                let rowTitle = document.createElement("tr");
+                rowTitle.appendChild(that.GetChildRecord(annotation["subject"] as string));
+                table.appendChild(rowTitle);
 
-            if (annotation.isdocument) {
+                let rowNote = document.createElement("tr");
+                let divText = document.createElement("div");
+                divText.addEventListener('click', that.textNoteClicked);
+                divText.setAttribute("class", "collapsedText");
+                divText.setAttribute("style","cursor: pointer;");
+                divText.textContent = annotation["notetext"] as string;
+
                 let cell = document.createElement("td");
-                cell.setAttribute("style","vertical-align:middle");
-                console.log("creating button");
-                let downloadButton = document.createElement("i");
-                downloadButton.setAttribute("type", "button");
-                downloadButton.setAttribute("style", "font-size:32px; cursor: pointer;");
-                downloadButton.setAttribute("name", "Show Input Parameter");
-                downloadButton.setAttribute("class", that.GetIconByMimeType(annotation["mimetype"]));
-                downloadButton.setAttribute(annotationHTMLTable.filename, annotation["filename"] as string);
-                downloadButton.setAttribute(annotationHTMLTable.annotationid, annotation["annotationid"] as string);
-                downloadButton.setAttribute(annotationHTMLTable.mimetype, annotation["mimetype"] as string);
-                downloadButton.addEventListener("click", that.downloadClicked);
-                cell.appendChild(downloadButton);
-                row.appendChild(cell);
-            } else {
-                row.appendChild(document.createElement("td"));
-            }
+                cell.appendChild(divText);
 
-            table.appendChild(row);
-            */
-        });
+                rowNote.appendChild(cell);
+                rowNote.setAttribute("class", !annotation.isdocument ? "borderBotton" : "");
+                table.appendChild(rowNote);
 
-        return table;
+                if (annotation.isdocument) {
+
+                    let rowDocument = document.createElement("tr");
+                    let cell = document.createElement("td");
+                    cell.setAttribute("style", "vertical-align:middle");
+                    cell.setAttribute("class", "borderBotton");
+
+                    let button = document.createElement("p");
+                    button.textContent = annotation["filename"] as string;
+                    button.setAttribute("style", "cursor: pointer;font-weight:bold;");
+                    button.addEventListener("click", that.downloadClicked);
+                    button.setAttribute(annotationHTMLTable.filename, annotation["filename"] as string);
+                    button.setAttribute(annotationHTMLTable.annotationid, annotation["annotationid"] as string);
+                    button.setAttribute(annotationHTMLTable.mimetype, annotation["mimetype"] as string);
+
+                    let icon = document.createElement("i");
+                    icon.setAttribute("name", "Show Input Parameter");
+                    icon.setAttribute("class", that.GetIconByMimeType(annotation["mimetype"]));
+
+                    button.appendChild(icon);
+                    cell.appendChild(button);
+                    rowDocument.appendChild(cell);
+                    table.appendChild(rowDocument);
+                }
+            });
+
+            return table;
+        } else {
+            return this.GetEmptyMessage(emptyMessage);
+        }
+
+
+
     }
 
+    public GetEmptyMessage(emptyMessage: string): HTMLTableElement {
 
+        let divMessageEmpty = document.createElement("div");
+        divMessageEmpty.innerHTML = `<div class="alert alert-dark">${emptyMessage}</div>`;
 
-    private GetCellText(value: string): HTMLTableDataCellElement {
-        let cell = document.createElement("td");
-        cell.textContent = value;
-        return cell;
+        let row = document.createElement("tr");
+        let cellMessage = document.createElement("td");
+
+        let tableMessage = document.createElement("table");
+        tableMessage.setAttribute("class", "customTable");
+
+        cellMessage.appendChild(divMessageEmpty);
+        row.appendChild(cellMessage);
+        tableMessage.appendChild(row);
+
+        return tableMessage;
     }
-
 
     private GetCellHtml(value: string): HTMLTableDataCellElement {
         let cell = document.createElement("td");
@@ -143,7 +152,6 @@ export class TableHelper {
     }
 
     private GetIconByMimeType(mimetype: string): string {
-
         switch (mimetype) {
             case 'image': return 'far fa-file-image'; break
             case 'audio': return 'far fa-file-audio'; break
@@ -172,13 +180,10 @@ export class TableHelper {
             case null: "";
             default: return "far fa-file-alt"; break;
         }
-
     }
 
 
     public downloadClick(evnt: Event): void {
-        console.log("HELLOOO You have clicked the Button !!!! XXX");
-        //var tt = require("./Libraries/download2.js");
 
 
         const btn = evnt.target as HTMLElement;
@@ -188,80 +193,11 @@ export class TableHelper {
         annotationid = annotationid == null ? "" : annotationid;
 
         let mimetype = btn.getAttribute(annotationHTMLTable.mimetype);
-
-
-
         AnnotationHelper.getFile(annotationid, this.localContext).then(function (res: ComponentFramework.WebApi.Entity) {
-            console.log("I've got the file");
             if (res != null) {
                 let fileBase64 = `data:text/plain;base64,${res["documentbody"]}`;
-
                 download(fileBase64, res["filename"], res["mimetype"]);
             }
-        })
-
-
+        });
     }
 }
-
-
-
-
-
-
-/*
-	export function GetHtml(elements: annotationType[]): HTMLTableElement {
-		var that = this;
-		var t = document.createElement("table");
-		t.setAttribute("class", "table table-striped")
-		let table: HTMLTableElement = t;
-		//table.className = "table table-striped";
-
-		let headerRow = document.createElement("tr");
-		headerRow.appendChild(this.GetCellText(""));
-		headerRow.appendChild(this.GetCellText("Created by"));
-		headerRow.appendChild(this.GetCellText("Created on"));
-		headerRow.appendChild(this.GetCellText("Subject"));
-		headerRow.appendChild(this.GetCellText("Text"));
-		table.appendChild(headerRow);
-
-
-
-
-
-		elements.forEach(function (annotation: annotationType, index: number) {
-
-			let row = document.createElement("tr");
-			let cell = document.createElement("td");
-
-
-			if (annotation.isdocument) {
-				console.log("creating button");
-				let downloadButton = document.createElement("i");
-				downloadButton.setAttribute("type", "button");
-				downloadButton.setAttribute("style", "font-size:32px");
-				downloadButton.setAttribute("name", "Show Input Parameter");
-				downloadButton.setAttribute("class", that.GetIconByMimeType(annotation.mimetype));
-				downloadButton.setAttribute(that.filename, annotation.filename);
-				downloadButton.setAttribute(that.annotationid, annotation.annotationid);
-				downloadButton.setAttribute(that.mimetype, annotation.mimetype);
-				downloadButton.addEventListener("click", that.downloadClick.bind(downloadButton));
-
-				cell.appendChild(downloadButton);
-
-				row.appendChild(cell);
-			} else {
-				row.appendChild(document.createElement("td"));
-			}
-			row.appendChild(that.GetChildRecord(annotation.createdby));
-			row.appendChild(that.GetChildRecord(annotation.createdon.toDateString()));
-			row.appendChild(that.GetChildRecord(annotation.subject));
-			row.appendChild(that.GetChildRecord(annotation.notetext));
-			table.appendChild(row);
-
-		});
-
-		return table;
-    }
-
-    */

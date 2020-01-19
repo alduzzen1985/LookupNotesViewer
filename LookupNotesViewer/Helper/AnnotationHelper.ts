@@ -13,11 +13,15 @@ export const AnnotationHelper = {
     <attribute name="annotationid" />
     <attribute name="isdocument" />
     <attribute name="filename" />
+    <attribute name="modifiedon" />
     <order attribute="createdon" descending="true" />
     <filter>
       <condition attribute="objectid" operator="eq" value="{objectid}" />
     </filter>
-    <link-entity name="systemuser" from="systemuserid" to="createdby" link-type="inner">
+    <link-entity name="systemuser" from="systemuserid" to="createdby" link-type="inner" alias="created">
+      <attribute name="fullname" />
+    </link-entity>
+    <link-entity name="systemuser" from="systemuserid" to="modifiedby" link-type="inner"  alias="modified">
       <attribute name="fullname" />
     </link-entity>
   </entity>
