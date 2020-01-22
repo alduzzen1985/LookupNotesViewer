@@ -1,10 +1,10 @@
 # LookupNotesViewer
 
-<img src="Pics/CrmView.png"/>
+
 
 Lookup Notes Viewer allows you to see all the notes related to a Lookup Field.
 
-
+<img src="Pics/CrmView.png"/>
 
 You can configure :
 <ul>
