@@ -16,8 +16,13 @@ You can configure :
 Currently you can bond the Control just to a Text Field since is still not possible bond to Lookup Fields.
 
 <img src="Pics/Settings.png"/>
+<hr/>
+<b><h5>Solutions</h5></b>
+<br/>
+<a href="#">LookupNotesViewerSolution_20202601.zip (unmanaged)</a>
 
 
+<hr/>
 Disclaimer
 <hr/>
 THIS CODE IS PROVIDED AS IS WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
