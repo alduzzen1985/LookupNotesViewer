@@ -19,7 +19,7 @@ For a better layout hide the label of the control.
 <img src="Pics/Settings.png"/>
 <hr/>
 <b><h3>Solutions</h3></b>
-<a href="#">LookupNotesViewerSolution_20202601.zip (unmanaged)</a>
+<a href="https://github.com/alduzzen1985/LookupNotesViewer/raw/master/Releases/LookupNotesViewerSolution_20202601.zip">LookupNotesViewerSolution_20202601.zip (unmanaged)</a>
 
 
 <hr/>
