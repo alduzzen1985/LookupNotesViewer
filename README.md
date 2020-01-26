@@ -13,7 +13,7 @@ You can configure :
 	<li>Message to display when there aren't notes</li>
 </ul>
 
-Currently you can bond the Control just to a Text Field since is still not possible bond to Lookup Fields.
+Currently you can bond the control only to a Text Field since is still not possible bond to Lookup Fields.
 
 <img src="Pics/Settings.png"/>
 <hr/>
