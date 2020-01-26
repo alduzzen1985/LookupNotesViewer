@@ -9,7 +9,7 @@ Lookup Notes Viewer allows you to see all the notes related to a Lookup Field.
 You can configure :
 <ul>
 	<li>Logical name of the Lookup Field </li>
-	<li>Date Time Format : If empty data are displayed with format dd/MM/yyyy</li>
+	<li>Date Time Format : If empty data are displayed with format dd/MM/yyyy hh:mi</li>
 	<li>Message to display when there aren't notes</li>
 </ul>
 
