@@ -14,6 +14,7 @@ You can configure :
 </ul>
 
 Currently you can bond the control only to a Text Field since is still not possible bond to Lookup Fields.
+For a better layout hide the label of the control.
 
 <img src="Pics/Settings.png"/>
 <hr/>
