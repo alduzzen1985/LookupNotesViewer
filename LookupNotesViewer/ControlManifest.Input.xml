@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest>
-  <control namespace="LookupNotesViewer" constructor="LookupNotesViewer" version="0.0.56" display-name-key="LookupNotesViewer" description-key="LookupNotesViewer description" control-type="standard">
+  <control namespace="LookupNotesViewer" constructor="LookupNotesViewer" version="2020.26.1" display-name-key="LookupNotesViewer" description-key="A control to show Notes related to a Lookup Field." control-type="standard">
     <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
     <property name="fieldName" display-name-key="FieldName" description-key="something" usage="bound" of-type="SingleLine.Text" required="true" />
     <property name="lookupField" display-name-key="LookupField" description-key="Logical name of the Lookup field to generate the Note Table" usage="input" of-type="SingleLine.Text" required="true" />

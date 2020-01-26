@@ -2,25 +2,25 @@
 <ImportExportXml version="9.1.0.643" SolutionPackageVersion="9.1" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <!-- Unique Name of Cds Solution-->
-    <UniqueName>Deployment</UniqueName>
+    <UniqueName>LookupNotesViewerSolution</UniqueName>
     <LocalizedNames>
       <!-- Localized Solution Name in language code -->
-      <LocalizedName description="Deployment" languagecode="1033" />
+      <LocalizedName description="LookupNotesViewerSolution" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.56</Version>
+    <Version>2020.26.1</Version>
     <!-- Solution Package Type: Unmanaged(0)/Managed(1)/Both(2)-->
     <Managed>2</Managed>
     <Publisher>
       <!-- Unique Publisher Name of Cds Solution -->
-      <UniqueName>Aldo_Gillone</UniqueName>
+      <UniqueName>AldoG</UniqueName>
       <LocalizedNames>
         <!-- Localized Cds Publisher Name in language code-->
-        <LocalizedName description="Aldo_Gillone" languagecode="1033" />
+        <LocalizedName description="AldoG" languagecode="1033" />
       </LocalizedNames>
       <Descriptions>
         <!-- Description of Cds Publisher in language code -->
-        <Description description="Aldo_Gillone" languagecode="1033" />
+        <Description description="AldoG" languagecode="1033" />
       </Descriptions>
       <EMailAddress xsi:nil="true">
       </EMailAddress>
