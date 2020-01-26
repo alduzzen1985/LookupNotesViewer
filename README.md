@@ -17,14 +17,13 @@ Currently you can bond the Control just to a Text Field since is still not possi
 
 <img src="Pics/Settings.png"/>
 <hr/>
-<b><h5>Solutions</h5></b>
-<br/>
+<b><h3>Solutions</h3></b>
 <a href="#">LookupNotesViewerSolution_20202601.zip (unmanaged)</a>
 
 
 <hr/>
-Disclaimer
-<hr/>
+<b><h3>Disclaimer</h3></b>
+
 THIS CODE IS PROVIDED AS IS WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 
 
